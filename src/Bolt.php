@@ -30,7 +30,9 @@ abstract class Bolt {
         $this->pubsub = new PubSub($this);
         $this->firestore = new Firestore($this);
         $this->stderr->write(LOG_INFO, "Initialize " . get_class($this));
-        $this->init();
+        if (is_callable([$this, 'init'])) {
+            $this->init();
+        }
     }
 
     public function run() : void {
