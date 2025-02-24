@@ -4,13 +4,13 @@ namespace Pota\Bolt;
 
 use Google\Cloud\Storage\StorageClient;
 
-class Storage extends Stderr {
+class Storage {
 
     private StorageClient|null $client = null;
-    private Config $config;
+    private Bolt $app;
 
-    public function __construct(Config $config) {
-        $this->config = $config;
+    public function __construct(Bolt $app) {
+        $this->app = $app;
     }
 
     private function init() : void {
@@ -20,40 +20,40 @@ class Storage extends Stderr {
     }
 
     public function bucketName(string $name) : string {
-        return implode($this->config->get('storage/separator'), [
-            $this->config->get('storage/bucket/prefix'),
-            $this->config->get('env/branch'),
+        return implode($this->app->config->get('storage/separator'), [
+            $this->app->config->get('env/project'),
+            $this->app->config->get('env/branch'),
             trim(strtolower($name))
         ]);
     }
 
     public function move(string $fromBucket, string $fromObjectName, string $toBucket, string $toObjectName = null) : void {
         $this->init();
-        $bucket = $this->client->bucket($fromBucket);
+        $bucket = $this->client->bucket($this->bucketName($fromBucket));
         $object = $bucket->object($fromObjectName);
         $object->copy($toBucket, ['name' => empty($toObjectName) ? $fromObjectName : $toObjectName]);
         $object->delete();
-        $this->logWrite(LOG_INFO, __FUNCTION__, "Moved $fromBucket:$fromObjectName to $toBucket");
+        $this->app->stderr->write(LOG_INFO, "Moved $fromBucket:$fromObjectName to $toBucket");
     }
 
     public function upload(string $bucketName, string $objectName, string $data) : void {
         $this->init();
-        $bucket = $this->client->bucket($bucketName);
+        $bucket = $this->client->bucket($this->bucketName($bucketName));
         $bucket->upload($data, ['name' => $objectName]);
-        $this->logWrite(LOG_INFO, __FUNCTION__, "Upload $bucketName:$objectName");
+        $this->app->stderr->write(LOG_INFO, "Upload $bucketName:$objectName");
     }
 
     public function download(string $bucketName, string $objectName, string $destination) : void {
         $this->init();
-        $bucket = $this->client->bucket($bucketName);
+        $bucket = $this->client->bucket($this->bucketName($bucketName));
         $object = $bucket->object($objectName);
         $object->downloadToFile($destination);
-        $this->logWrite(LOG_INFO, __FUNCTION__, "Download $bucketName:$objectName to $destination");
+        $this->app->stderr->write(LOG_INFO, "Download $bucketName:$objectName to $destination");
     }
 
     public function get(string $bucketName, string $objectName) : ?string {
         $this->init();
-        $bucket = $this->client->bucket($bucketName);
+        $bucket = $this->client->bucket($this->bucketName($bucketName));
         $object = $bucket->object($objectName);
         return $object->downloadAsString();
     }

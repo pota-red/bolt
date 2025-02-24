@@ -2,39 +2,52 @@
 
 namespace Pota\Bolt;
 
-class Bolt {
+date_default_timezone_set('UTC');
 
-    private Config|null $config = null;
-    private PubSub|null $pubsub = null;
-    private Storage|null $storage = null;
-    private Firestore|null $firestore = null;
+use Google\CloudFunctions\FunctionsFramework;
+use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+
+abstract class Bolt {
+
+    public const string STATUS_OK = '200';
+
+    public Config|null $config = null;
+    public Stderr|null $stderr = null;
+    public Router|null $router = null;
+    public PubSub|null $pubsub = null;
+    public Storage|null $storage = null;
+    public Firestore|null $firestore = null;
 
     public function __construct() {
+        $this->stderr = new Stderr;
         $this->config = new Config;
-        $this->config->set('env/project', 'pota-red');
-        $this->config->set('env/branch', getenv('BRANCH_NAME'));
         $this->config->set('storage/separator', '--');
-        $this->config->set('storage/bucket/prefix', $this->config->get('env/project'));
-        $this->config->set('firestore/database/name', getenv('BRANCH_NAME') == 'prod' ? '(default)' : 'devel');
-        $this->storage = new Storage($this->config);
-        $this->pubsub = new PubSub($this->config);
-        $this->firestore = new Firestore($this->config);
+        $this->config->set('pubsub/separator', '--');
+        $this->router = new Router($this);
+        $this->storage = new Storage($this);
+        $this->pubsub = new PubSub($this);
+        $this->firestore = new Firestore($this);
+        $this->stderr->write(LOG_INFO, "Initialize " . get_class($this));
+        $this->init();
     }
 
-    public function config() : Config {
-        return $this->config;
+    public function run() : void {
+        FunctionsFramework::http(get_class($this), [$this, 'handle']);
     }
 
-    public function pubsub() : PubSub {
-        return $this->pubsub;
-    }
-
-    public function storage() : Storage {
-        return $this->storage;
-    }
-
-    public function firestore() : Firestore {
-        return $this->firestore;
+    public function handle(ServerRequestInterface $request) : ResponseInterface {
+        try {
+            $uriPath = $request->getUri()->getPath() ?? null;
+            $httpMethod = $request->getMethod();
+            $data = $this->router->handle($httpMethod, $uriPath, ['body' => $request->getBody()]);
+            $out = new Response(200, ['Content-type' => 'application/json'], json_encode(['data' => $data]));
+        } catch (\Throwable $e) {
+            $this->stderr->write(LOG_ERR, $e->getMessage());
+            $out = new Response(500, ['Content-type' => 'application/json'], json_encode(['error' => $e->getMessage()]));
+        }
+        return $out;
     }
 
 }

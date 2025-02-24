@@ -25,4 +25,10 @@ class Config {
         }
     }
 
+    public function loadIni(string $file) : void {
+        if (is_file($file) && is_readable($file)) {
+            $this->setArray(parse_ini_file($file));
+        }
+    }
+
 }
