@@ -24,16 +24,15 @@ Base loader / interface framework for GCP Cloud Run invokables.
 
 ### Basic Script
 
-The class name (eg: `helloworld`) is the GCP Cloud Run name.
-
 ```php
 <?php
 
 require_once 'vendor/autoload.php';
 
 use Pota\Bolt\Bolt;
+use Psr\Http\Message\ServerRequestInterface;
 
-class helloworld extends Bolt {
+class app extends Bolt {
 
     public function init() {
         # setup configuration
@@ -41,27 +40,17 @@ class helloworld extends Bolt {
         $this->config->set('env/branch', getenv('BRANCH_NAME'));
         $this->config->set('firestore/database/name', getenv('BRANCH_NAME') == 'prod' ? '(default)' : 'devel');
         $this->config->loadIni(__DIR__ . '/.env');
-        # register endpoints
-        $this->router->get('/health', 'health');
-        $this->router->get('/v1/hello', 'getHello');
-        $this->router->post('/v1/hello', 'postHello');
     }
 
-    public function health() : mixed {
-        return Bolt::STATUS_OK;
-    }
-
-    public function getHello() : mixed {
-        return 'Hello Earthlings!';
-    }
-    
-    public function postHello(array $input) : mixed {
-        return "Hello {$input[0]}";
+    public function process() {
+        # logic here
     }
 
 }
 
-(new helloworld)->run();
+function run(ServerRequestInterface $request) {
+    new app($request);
+}
 
 
 ```

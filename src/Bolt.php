@@ -11,21 +11,35 @@ use Psr\Http\Message\ResponseInterface;
 
 abstract class Bolt {
 
-    public const string STATUS_OK = '200';
-
+    public ServerRequestInterface|null $request = null;
+    public object|null $input = null;
+    public string|null $uri = null;
+    public array|null $query = null;
+    public string|null $method = null;
     public Config|null $config = null;
     public Stderr|null $stderr = null;
-    public Router|null $router = null;
     public PubSub|null $pubsub = null;
     public Storage|null $storage = null;
     public Firestore|null $firestore = null;
 
-    public function __construct() {
+    public function __construct(ServerRequestInterface $request) {
+        $this->request = $request;
+        $params = $request->getServerParams();
+        $type = $params['CONTENT_TYPE'] ?? null;
+        $input = trim(file_get_contents('php://input'));
+        switch ($type) {
+            case 'application/json':
+            case 'application/x-www-form-urlencoded':
+                $this->input = !empty($input) ? json_decode($input) : null;
+                break;
+        }
+        $this->uri = $request->getUri()->getPath() ?? null;
+        $this->query = $request->getQueryParams() ?? null;
+        $this->method = $request->getMethod() ?? null;
         $this->stderr = new Stderr;
         $this->config = new Config;
         $this->config->set('storage/separator', '--');
         $this->config->set('pubsub/separator', '--');
-        $this->router = new Router($this);
         $this->storage = new Storage($this);
         $this->pubsub = new PubSub($this);
         $this->firestore = new Firestore($this);
@@ -33,23 +47,14 @@ abstract class Bolt {
         if (is_callable([$this, 'init'])) {
             $this->init();
         }
-    }
-
-    public function run() : void {
-        FunctionsFramework::http(get_class($this), [$this, 'handle']);
-    }
-
-    public function handle(ServerRequestInterface $request) : ResponseInterface {
-        try {
-            $uriPath = $request->getUri()->getPath() ?? null;
-            $httpMethod = $request->getMethod();
-            $data = $this->router->handle($httpMethod, $uriPath, ['body' => $request->getBody()]);
-            $out = new Response(200, ['Content-type' => 'application/json'], json_encode(['data' => $data]));
-        } catch (\Throwable $e) {
-            $this->stderr->write(LOG_ERR, $e->getMessage());
-            $out = new Response(500, ['Content-type' => 'application/json'], json_encode(['error' => $e->getMessage()]));
+        if  (is_callable([$this, 'process'])) {
+            $this->process();
         }
-        return $out;
+    }
+
+    public function output(int $status, string|array|null $data = null, array $headers = []) : Response {
+        $data = is_array($data) ? json_encode($data) : null;
+        return new Response($status, $headers, $data);
     }
 
 }
