@@ -1,0 +1,42 @@
+{
+  "name": "pota/bolt",
+  "description": "Basic framework for GCP Cloud Run instances",
+  "authors": [
+    {
+      "name": "James Linden (VE3JLN/N6NRD)",
+      "email": "rfingaround@gmail.com",
+      "role": "Developer"
+    },
+    {
+      "name": "Dan Muntz (WD4DAN)",
+      "email": "muntz.dan@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "type": "library",
+  "keywords": [
+    "POTA",
+    "GCP",
+    "Cloud Run"
+  ],
+  "require": {
+    "php": "^8.3",
+    "google/cloud-functions-framework": "^1.3",
+    "google/cloud-firestore": "^1.48",
+    "google/cloud-storage": "^1.46",
+    "google/cloud-pubsub": "^2.10",
+    "grpc/grpc": "^1.38",
+    "google/protobuf": "^3.25",
+    "guzzlehttp/psr7": "^2.7",
+    "psr/http-message": "^1.1"
+  },
+  "provide": {
+    "ext-grpc": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Pota\\Bolt\\": "src/"
+    }
+  }
+}
+
