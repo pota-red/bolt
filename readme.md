@@ -32,8 +32,6 @@ The class name (eg: `helloworld`) is the GCP Cloud Run name.
 require_once 'vendor/autoload.php';
 
 use Pota\Bolt\Bolt;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
 
 class helloworld extends Bolt {
 
