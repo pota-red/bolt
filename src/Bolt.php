@@ -4,12 +4,11 @@ namespace Pota\Bolt;
 
 date_default_timezone_set('UTC');
 
-use Google\CloudFunctions\FunctionsFramework;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-abstract class Bolt {
+class Bolt {
 
     public ServerRequestInterface|null $request = null;
     public object|null $input = null;
@@ -44,15 +43,9 @@ abstract class Bolt {
         $this->pubsub = new PubSub($this);
         $this->firestore = new Firestore($this);
         $this->stderr->write(LOG_INFO, "Initialize " . get_class($this));
-        if (is_callable([$this, 'init'])) {
-            $this->init();
-        }
-        if  (is_callable([$this, 'process'])) {
-            $this->process();
-        }
     }
 
-    public function output(int $status, string|array|null $data = null, array $headers = []) : Response {
+    public function output(int $status, string|array|null $data = null, array $headers = []) : ResponseInterface {
         $data = is_array($data) ? json_encode($data) : null;
         return new Response($status, $headers, $data);
     }
