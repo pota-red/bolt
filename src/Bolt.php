@@ -10,6 +10,8 @@ use Psr\Http\Message\ResponseInterface;
 
 class Bolt {
 
+    public const array JSON_HEADER = ['Content-Type' => 'application/json'];
+
     public ServerRequestInterface|null $request = null;
     public object|null $input = null;
     public string|null $uri = null;
@@ -45,9 +47,12 @@ class Bolt {
         $this->stderr->write(LOG_INFO, 'Initialize');
     }
 
-    public function output(int $status, string|array|null $data = null, array $headers = []) : ResponseInterface {
-        $data = is_array($data) ? json_encode($data) : null;
-        return new Response($status, $headers, $data);
+    public function emit_error(int $status, string $message) : Response {
+        return new Response($status, self::JSON_HEADER, json_encode(['error' => $message]));
+    }
+
+    public function emit_message(int $status, string $message) : Response {
+        return new Response($status, self::JSON_HEADER, json_encode(['message' => $message]));
     }
 
 }

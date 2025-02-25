@@ -27,7 +27,7 @@ class PubSub {
         ]);
     }
 
-    protected function send(string $topicName, array $data) : bool {
+    public function send(string $topicName, array|object $data) : bool {
         $this->init();
         $topic = $this->client->topic($this->topicName($topicName));
         return (bool)count($topic->publish((new MessageBuilder())->setData(json_encode($data))->build()));
