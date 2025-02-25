@@ -42,7 +42,7 @@ class Bolt {
         $this->storage = new Storage($this);
         $this->pubsub = new PubSub($this);
         $this->firestore = new Firestore($this);
-        $this->stderr->write(LOG_INFO, "Initialize " . get_class($this));
+        $this->stderr->write(LOG_INFO, 'Initialize');
     }
 
     public function output(int $status, string|array|null $data = null, array $headers = []) : ResponseInterface {
