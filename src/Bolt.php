@@ -36,7 +36,7 @@ class Bolt {
         }
         $this->uri = $request->getUri()->getPath() ?? null;
         $this->query = $request->getQueryParams() ?? null;
-        $this->method = $request->getMethod() ?? null;
+        $this->method = strtoupper($request->getMethod()) ?? null;
         $this->stderr = new Stderr;
         $this->config = new Config;
         $this->config->set('storage/separator', '--');
@@ -53,6 +53,10 @@ class Bolt {
 
     public function emit_message(int $status, string $message) : Response {
         return new Response($status, self::JSON_HEADER, json_encode(['message' => $message]));
+    }
+
+    public function emit_data(iterable $data) : Response {
+        return new Response(200, self::JSON_HEADER, json_encode(['data' => $data]));
     }
 
 }

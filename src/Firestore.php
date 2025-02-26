@@ -27,5 +27,53 @@ class Firestore {
         }
     }
 
+    public function client() : FirestoreClient {
+        return $this->client;
+    }
+
+    public function set(string $collection, string $document, array $fields) : mixed {
+        $collection = trim(strtolower($collection));
+        return $this->client->collection($collection)->document($document)->set($fields);
+    }
+
+    public function get(string $collection, string $document) : mixed {
+        $collection = trim(strtolower($collection));
+        return $this->client->collection($collection)->document($document);
+    }
+
+    public function collection(string $collection) : mixed {
+        $collection = trim(strtolower($collection));
+        return $this->client->collection($collection);
+    }
+
+    public function document(string $collection, string $document) : mixed {
+        $collection = trim(strtolower($collection));
+        return $this->client->document($document);
+    }
+
+    public function record(string $collection, string $document) : mixed {
+        if ($doc = $this->document($collection, $document)) {
+            if ($snap = $doc->snapshot()) {
+                return $snap->data();
+            }
+        }
+        return false;
+    }
+
+    public function recordset(string $collection) : mixed {
+        if ($col = $this->collection($collection)) {
+            if ($docs = $col->listDocuments()) {
+                $data = [];
+                foreach ($docs as $doc) {
+                    if ($snap = $doc->snapshot()) {
+                        $data[] = $snap->data();
+                    }
+                }
+                return $data;
+            }
+        }
+        return false;
+    }
+
 }
 
