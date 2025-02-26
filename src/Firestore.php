@@ -28,6 +28,7 @@ class Firestore {
     }
 
     public function client() : FirestoreClient {
+        $this->init();
         return $this->client;
     }
 
