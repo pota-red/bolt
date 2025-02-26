@@ -32,21 +32,25 @@ class Firestore {
     }
 
     public function set(string $collection, string $document, array $fields) : mixed {
+        $this->init();
         $collection = trim(strtolower($collection));
         return $this->client->collection($collection)->document($document)->set($fields);
     }
 
     public function get(string $collection, string $document) : mixed {
+        $this->init();
         $collection = trim(strtolower($collection));
         return $this->client->collection($collection)->document($document);
     }
 
     public function collection(string $collection) : mixed {
+        $this->init();
         $collection = trim(strtolower($collection));
         return $this->client->collection($collection);
     }
 
     public function document(string $collection, string $document) : mixed {
+        $this->init();
         $collection = trim(strtolower($collection));
         return $this->client->document($document);
     }
@@ -61,6 +65,7 @@ class Firestore {
     }
 
     public function recordset(string $collection) : mixed {
+        $this->init();
         if ($col = $this->collection($collection)) {
             if ($docs = $col->listDocuments()) {
                 $data = [];
