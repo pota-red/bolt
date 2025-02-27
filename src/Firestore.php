@@ -22,7 +22,7 @@ class Firestore {
                     'database' => $this->app->config->get('firestore/database/name')
                 ]);
             } catch (Throwable $e) {
-                $this->app->stderr->write(LOG_ERR, __FUNCTION__, $e->getMessage());
+                $this->app->stderr->write(LOG_ERR, $e->getMessage());
             }
         }
     }
@@ -53,7 +53,7 @@ class Firestore {
     public function document(string $collection, string $document) : mixed {
         $this->init();
         $collection = trim(strtolower($collection));
-        return $this->client->document($document);
+        return $this->client->document("{$collection}/{$document}");
     }
 
     public function record(string $collection, string $document) : mixed {
