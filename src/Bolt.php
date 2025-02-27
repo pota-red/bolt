@@ -48,15 +48,15 @@ class Bolt {
     }
 
     public function emit_error(int $status, string $message) : Response {
-        return new Response($status, self::JSON_HEADER, json_encode(['error' => $message]));
+        return new Response($status, self::JSON_HEADER, json_encode(['error' => $message]) . PHP_EOL);
     }
 
     public function emit_message(int $status, string $message) : Response {
-        return new Response($status, self::JSON_HEADER, json_encode(['message' => $message]));
+        return new Response($status, self::JSON_HEADER, json_encode(['message' => $message]) . PHP_EOL);
     }
 
     public function emit_data(iterable $data) : Response {
-        return new Response(200, self::JSON_HEADER, json_encode(['data' => $data]));
+        return new Response(200, self::JSON_HEADER, json_encode(['data' => $data]) . PHP_EOL);
     }
 
 }
