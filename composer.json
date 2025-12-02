@@ -19,7 +19,8 @@
     "grpc/grpc": "^1.38",
     "google/protobuf": "^3.3.0",
     "google/cloud-storage": "^1.36",
-    "google/cloud-pubsub": "^2.8"
+    "google/cloud-pubsub": "^2.8",
+    "google/cloud-secret-manager": "v2.2.1"
   },
   "autoload": {
     "psr-4": {
