@@ -20,7 +20,7 @@
     "google/protobuf": "^4.31",
     "google/cloud-storage": "^1.36",
     "google/cloud-pubsub": "^2.8",
-    "google/cloud-secret-manager": "v2.2.1"
+    "google/cloud-secret-manager": "dev-main"
   },
   "autoload": {
     "psr-4": {
