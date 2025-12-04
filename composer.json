@@ -16,11 +16,11 @@
   "require": {
     "php" : "^8.3",
     "google/cloud-functions-framework": "^1.3",
-    "grpc/grpc": "^1.38",
-    "google/protobuf": "^4.31",
-    "google/cloud-storage": "^1.36",
-    "google/cloud-pubsub": "^2.8",
-    "google/cloud-secret-manager": "dev-main"
+    "grpc/grpc": "^1.74",
+    "google/protobuf": "^4.33",
+    "google/cloud-storage": "^1.48",
+    "google/cloud-pubsub": "^2.16",
+    "google/cloud-secret-manager": "^2.2.1"
   },
   "autoload": {
     "psr-4": {

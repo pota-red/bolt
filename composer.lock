@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f8a513dc9c8affa9dce3a0b1bd3cc6c",
+    "content-hash": "3983b17711f86f080bb9e966f168adf5",
     "packages": [
         {
             "name": "brick/math",
@@ -422,7 +422,7 @@
         },
         {
             "name": "google/cloud-secret-manager",
-            "version": "dev-main",
+            "version": "v2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-secret-manager.git",
@@ -445,7 +445,6 @@
                 "ext-grpc": "Enables use of gRPC, a universal high-performance RPC framework created by Google.",
                 "ext-protobuf": "Provides a significant increase in throughput over the pure PHP protobuf implementation. See https://cloud.google.com/php/grpc for installation instructions."
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "component": {
@@ -1944,9 +1943,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "google/cloud-secret-manager": 20
-    },
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
