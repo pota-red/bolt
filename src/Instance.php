@@ -25,7 +25,7 @@ class Instance {
                     $this->storage = new Storage($this);
                     break;
                 case 'pubsub':
-                    $this->pubsub = new Pubsub($this);
+                    $this->pubsub = new PubSub($this);
                     break;
                 case 'secrets':
                     $this->secrets = new Secrets($this);
