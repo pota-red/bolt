@@ -23,6 +23,7 @@ class Storage extends Module {
     public function move(string $fromBucket, string $fromObjectName, string $toBucket, string $toObjectName = null) : void {
         $bucket = $this->client->bucket($this->bucketName($fromBucket));
         $object = $bucket->object($fromObjectName);
+        $toBucket = $this->client->bucket($this->bucketName($toBucket));
         $object->copy($toBucket, ['name' => empty($toObjectName) ? $fromObjectName : $toObjectName]);
         $object->delete();
     }
