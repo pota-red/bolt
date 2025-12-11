@@ -22,7 +22,7 @@ class PubSub extends Module {
         return (bool)count($topic->publish((new MessageBuilder())->setData(json_encode($data))->build()));
     }
 
-    public static function decodeData(object $data) : object {
+    public function decodeData(object $data) : object {
         return isset($data->message->data) ? json_decode(base64_decode($data->message->data)) : (object)[];
     }
 
