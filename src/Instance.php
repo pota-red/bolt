@@ -16,6 +16,8 @@ class Instance {
     public $mongo = null;
 
     public function __construct(array $services = []) {
+        $this->stderr = new Stderr($this);
+        $this->secrets = new Secrets($this);
         $this->config = new Config;
         $this->config->set('separator', '--');
         foreach (getenv() as $k => $v) {
@@ -30,12 +32,6 @@ class Instance {
                     break;
                 case 'pubsub':
                     $this->pubsub = new PubSub($this);
-                    break;
-                case 'secrets':
-                    $this->secrets = new Secrets($this);
-                    break;
-                case 'stderr':
-                    $this->stderr = new Stderr($this);
                     break;
                 case 'firestore':
                     $this->firestore = new Firestore($this);
