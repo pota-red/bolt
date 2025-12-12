@@ -32,15 +32,11 @@ class Secrets extends Module {
     }
 
     public function getJson(string $name, string $version = 'latest') : object|null {
-        $sec = $this->get($name, $version);
-        $this->instance->stderr->info("bolt::secrets::getJSON  " . $sec);
-        return json_decode($sec);
+        return json_decode($this->get($name, $version));
     }
 
     public function getArray(string $name, string $version = 'latest') : array|null {
-        $sec = $this->get($name, $version);
-        $this->instance->stderr->info("bolt::secrets::getArray  " . $sec);
-        return json_decode($sec, true);
+        return json_decode($this->get($name, $version), true);
     }
 
 }
