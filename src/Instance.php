@@ -85,7 +85,7 @@ class Instance {
             $cfg = "mongodb://{$cfg['user']}:{$cfg['pass']}@{$cfg['host']}:{$cfg['port']}/{$cfg['name']}?{$cfg['opts']}";
         }
         if (is_string($cfg)) {
-            $this->mongo = new MongoDB\Client($cfg);
+            $this->mongo = new \MongoDB\Client($cfg);
         }
     }
 }
