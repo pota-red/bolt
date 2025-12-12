@@ -13,8 +13,9 @@ class Instance {
     public PubSub|null $pubsub = null;
     public Storage|null $storage = null;
 
-    public function __construct(array $services = []) {
+    public $mongo = null;
 
+    public function __construct(array $services = []) {
         $this->config = new Config;
         $this->config->set('separator', '--');
         $this->config->set('branch', getenv('BRANCH_NAME'));
@@ -36,6 +37,9 @@ class Instance {
                 case 'firestore':
                     $this->firestore = new Firestore($this);
                     break;
+                case 'mongodb':
+                    $this->mongodb();
+                    break;
             }
         }
     }
@@ -51,5 +55,15 @@ class Instance {
             'firestore' => get_class($this->firestore)
         ];
         return $data;
+    }
+
+    public function mongodb()  {
+        $user = $this->config->get('mongodb_user');
+        $pass = $this->secrets->get($this->config->get('mongodb_secret'));
+        $host = $this->config->get('mongodb_host');
+        $port = $this->config->get('mongodb_port');
+        $name = $this->config->get('mongodb_name');
+        $opts = "loadBalanced=true&tls=true&authMechanism=SCRAM-SHA-256&retryWrites=false";
+        $this->mongo = new MongoDB\Client("mongodb://{$user}:{$pass}@{$host}:{$port}/{$name}?$opts");
     }
 }

@@ -26,4 +26,8 @@ class PubSub extends Module {
         return isset($data->message->data) ? json_decode(base64_decode($data->message->data)) : (object)[];
     }
 
+    public function fromStdin() : object {
+        return $this->decodeData(json_decode(file_get_contents('php://input')));
+    }
+
 }
