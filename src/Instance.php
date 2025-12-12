@@ -58,9 +58,7 @@ class Instance {
 
     public function mongodb()  {
         $cfg = null;
-        if ($this->config->exists('mongodb_uri')) {
-            $cfg = $this->config->get('mongodb_uri');
-        } elseif ($this->config->exists('mongodb_config')) {
+        if ($this->config->exists('mongodb_config')) {
             $cfg = $this->secrets->getArray($this->config->get('mongodb_config'));
         } elseif ($this->config->exists('mongodb_host')) {
             $cfg = [
@@ -75,6 +73,11 @@ class Instance {
         if (is_array($cfg)) {
             if (!array_key_exists('opts', $cfg) || empty($cfg['opts'])) {
                 $cfg['opts'] = "loadBalanced=true&tls=true&authMechanism=SCRAM-SHA-256&retryWrites=false";
+            }
+            foreach ($cfg as $k => $v) {
+                if ($k != 'pass') {
+                    $this->config->set("mongodb_$k", $v);
+                }
             }
             $cfg = "mongodb://{$cfg['user']}:{$cfg['pass']}@{$cfg['host']}:{$cfg['port']}/{$cfg['name']}?{$cfg['opts']}";
         }
