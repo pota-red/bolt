@@ -65,8 +65,9 @@ class Instance {
         if ($this->config->exists('mongodb_uri')) {
             $cfg = $this->config->get('mongodb_uri');
         } elseif ($this->config->exists('mongodb_config')) {
+            $this->stderr->info("MONGO_CONFIG   " . $this->config->get('mongodb_config'));
             $cfg = (array)$this->secrets->getJson($this->config->get('mongodb_config'));
-            $this->config->set('mongodb_config_debug', $cfg);
+            $this->stderr->info("MONGO_CONFIG_DATA   " . print_r($cfg, true));
         } elseif ($this->config->exists('mongodb_host')) {
             $cfg = [
                 'user' => $this->config->get('mongodb_user'),
