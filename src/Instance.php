@@ -61,9 +61,7 @@ class Instance {
         if ($this->config->exists('mongodb_uri')) {
             $cfg = $this->config->get('mongodb_uri');
         } elseif ($this->config->exists('mongodb_config')) {
-            $this->stderr->info("MONGO_CONFIG   " . $this->config->get('mongodb_config'));
-            $cfg = $this->secrets->get($this->config->get('mongodb_config'));
-            $this->stderr->info("MONGO_CONFIG_DATA   " . $cfg);
+            $cfg = (array)$this->secrets->getJson($this->config->get('mongodb_config'));
         } elseif ($this->config->exists('mongodb_host')) {
             $cfg = [
                 'user' => $this->config->get('mongodb_user'),
@@ -78,10 +76,10 @@ class Instance {
             if (!array_key_exists('opts', $cfg) || empty($cfg['opts'])) {
                 $cfg['opts'] = "loadBalanced=true&tls=true&authMechanism=SCRAM-SHA-256&retryWrites=false";
             }
-#            $cfg = "mongodb://{$cfg['user']}:{$cfg['pass']}@{$cfg['host']}:{$cfg['port']}/{$cfg['name']}?{$cfg['opts']}";
+            $cfg = "mongodb://{$cfg['user']}:{$cfg['pass']}@{$cfg['host']}:{$cfg['port']}/{$cfg['name']}?{$cfg['opts']}";
         }
         if (is_string($cfg)) {
-#            $this->mongo = new \MongoDB\Client($cfg);
+            $this->mongo = new \MongoDB\Client($cfg);
         }
     }
 }
