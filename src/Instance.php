@@ -67,7 +67,7 @@ class Instance {
                 'host' => $this->config->get('mongodb_host'),
                 'port' => $this->config->get('mongodb_port'),
                 'name' => $this->config->get('mongodb_name'),
-                'opts' => $this->config->get('mongodb_name')
+                'opts' => $this->config->get('mongodb_opts')
             ];
         }
         if (is_array($cfg)) {
