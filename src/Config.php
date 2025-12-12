@@ -35,4 +35,9 @@ class Config {
         }
     }
 
+    public function exists(string $key) : bool {
+        $key = trim(strtolower($key));
+        return array_key_exists($key, $this->data);
+    }
+
 }

@@ -29,4 +29,8 @@ class Secrets extends Module {
         return '';
     }
 
+    public function getJson(string $name, string $version = 'latest') : object|null {
+        return json_decode($this->get($name, $version));
+    }
+
 }
