@@ -25,7 +25,9 @@ class Secrets extends Module {
             if ($data = $req->getPayload()->getData()) {
                 return $data;
             }
-        } catch (\Throwable $t) {}
+        } catch (\Throwable $t) {
+            $this->instance->stderr->error("bolt::secrets::get  " . $t->getMessage());
+        }
         return '';
     }
 
