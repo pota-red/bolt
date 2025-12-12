@@ -18,8 +18,11 @@ class Instance {
     public function __construct(array $services = []) {
         $this->config = new Config;
         $this->config->set('separator', '--');
-        $this->config->set('branch', getenv('BRANCH_NAME'));
-        $this->config->set('project', getenv('GOOGLE_PROJECT'));
+        foreach (getenv() as $k => $v) {
+            if (str_starts_with(strtoupper($k), 'BOLT_')) {
+                $this->config->set(strtolower(substr($k, 5)), $v);
+            }
+        }
         foreach ($services as $service) {
             switch (trim(strtolower($service))) {
                 case 'storage':

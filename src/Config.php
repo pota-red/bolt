@@ -14,6 +14,10 @@ class Config {
         return $this->data;
     }
 
+    public function getArray() : array {
+        return $this->data;
+    }
+
     public function set(string $key, mixed $value) : void {
         $key = trim(strtolower($key));
         $this->data[$key] = $value;
