@@ -13,8 +13,6 @@ class Instance {
     public PubSub|null $pubsub = null;
     public Storage|null $storage = null;
 
-    public $mongo = null;
-
     public function __construct(array $services = []) {
         $this->stderr = new Stderr($this);
         $this->secrets = new Secrets($this);
@@ -36,9 +34,6 @@ class Instance {
                 case 'firestore':
                     $this->firestore = new Firestore($this);
                     break;
-                case 'mongodb':
-                    $this->mongodb();
-                    break;
             }
         }
     }
@@ -56,38 +51,9 @@ class Instance {
         return $data;
     }
 
-    public function mongodb()  {
-        $cfg = null;
-        if ($this->config->exists('mongodb_config')) {
-            $cfg = $this->secrets->getArray($this->config->get('mongodb_config'));
-        } elseif ($this->config->exists('mongodb_host')) {
-            $cfg = [
-                'user' => $this->config->get('mongodb_user'),
-                'pass' => $this->secrets->get($this->config->get('mongodb_secret')),
-                'host' => $this->config->get('mongodb_host'),
-                'port' => $this->config->get('mongodb_port'),
-                'name' => $this->config->get('mongodb_name'),
-                'opts' => $this->config->get('mongodb_opts')
-            ];
-        }
-        if (is_array($cfg)) {
-            if (!array_key_exists('opts', $cfg) || empty($cfg['opts'])) {
-                $cfg['opts'] = "loadBalanced=true&tls=true&authMechanism=SCRAM-SHA-256&retryWrites=false";
-            }
-            foreach ($cfg as $k => $v) {
-                if ($k != 'pass') {
-                    $this->config->set("mongodb_$k", $v);
-                }
-            }
-            $cfg = "mongodb://{$cfg['user']}:{$cfg['pass']}@{$cfg['host']}:{$cfg['port']}/{$cfg['name']}?{$cfg['opts']}";
-        }
-        if (is_string($cfg)) {
-            try {
-                $this->mongo = new \MongoDB\Client($cfg);
-            } catch (\Throwable $t) {
-                $this->stderr->error("Unable to start MongoDB Client with specified config - " . $cfg);
-                $this->stderr->error($t->getMessage());
-            }
-        }
+    public function tick(float $value = 0) : float|int {
+        $x = hrtime(true);
+        return ($value != 0) ? round(($x - $value) / 1e+6, 3) : $x;
     }
+
 }
