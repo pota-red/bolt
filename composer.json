@@ -21,7 +21,9 @@
     "google/cloud-storage": "^1.48",
     "google/cloud-pubsub": "^2.16",
     "google/cloud-secret-manager": "^2.2.1",
-    "ext-mongodb": "*"
+    "ext-mongodb": "*",
+    "predis/predis": "dev-main",
+    "ext-pdo": "*"
   },
   "autoload": {
     "psr-4": {

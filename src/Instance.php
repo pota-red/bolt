@@ -12,6 +12,7 @@ class Instance {
     public Stderr|null $stderr = null;
     public PubSub|null $pubsub = null;
     public Storage|null $storage = null;
+    public Cache|null $cache = null;
 
     public function __construct(array $services = []) {
         $this->stderr = new Stderr($this);
@@ -33,6 +34,9 @@ class Instance {
                     break;
                 case 'firestore':
                     $this->firestore = new Firestore($this);
+                    break;
+                case 'cache':
+                    $this->cache = new Cache;
                     break;
             }
         }
