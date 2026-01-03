@@ -62,7 +62,7 @@ class Cache {
                     if ($r = $q->fetch(PDO::FETCH_OBJ)) {
                         $data = json_encode($r);
                         $expire = $this->expires[$table] ?? 43200;
-                        $this->redis->setex($key, $expire, $data);
+                        $this->redis->set($key, $data, 'EX', $expire);
                         $this->data[$key] = $data;
                     }
                 }
@@ -70,5 +70,4 @@ class Cache {
         }
         return isset($this->data[$key]) ? json_decode($this->data[$key]) : null;
     }
-
 }
