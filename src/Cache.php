@@ -37,11 +37,11 @@ class Cache {
     public function __construct() {
     }
 
-    public function initRedis(string $redis_host) {
+    public function initRedis(string $redis_host) : void {
         $this->redis = new Predis(['scheme' => 'tcp', 'host' => $redis_host, 'port' => 6379]);
     }
 
-    public function initPg(string $pg_instance, string $pg_user, string $pg_pass, string $pg_name) {
+    public function initPg(string $pg_instance, string $pg_user, string $pg_pass, string $pg_name) : void {
         $this->pg = new PDO("pgsql:dbname=$pg_name;host=/cloudsql/$pg_instance", $pg_user, $pg_pass);
     }
 
