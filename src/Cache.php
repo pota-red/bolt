@@ -58,7 +58,7 @@ class Cache {
         if (!isset($this->data[$key])) {
             if (!$this->redis->exists($key)) {
                 $f = $this->maps[$table] ? implode(',', $this->maps[$table]) : '*';
-                if ($q = $this->pg->query("SELECT $f FROM $table WHERE $col = '$value'")) {
+                if ($q = $this->pg->query("SELECT $f FROM $table WHERE $col = '$value' LIMIT 1")) {
                     if ($r = $q->fetch(PDO::FETCH_OBJ)) {
                         $data = json_encode($r);
                         $expire = $this->expires[$table] ?? 43200;
