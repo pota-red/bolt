@@ -72,12 +72,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cloudevents/sdk-php.git",
-                "reference": "976591bc08ce7fe8ce0ca051514da65a574e4702"
+                "reference": "f4fa92b46f2775528626c21c7eab877910e330c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudevents/sdk-php/zipball/976591bc08ce7fe8ce0ca051514da65a574e4702",
-                "reference": "976591bc08ce7fe8ce0ca051514da65a574e4702",
+                "url": "https://api.github.com/repos/cloudevents/sdk-php/zipball/f4fa92b46f2775528626c21c7eab877910e330c7",
+                "reference": "f4fa92b46f2775528626c21c7eab877910e330c7",
                 "shasum": ""
             },
             "require": {
@@ -123,7 +123,7 @@
                 "issues": "https://github.com/cloudevents/sdk-php/issues",
                 "source": "https://github.com/cloudevents/sdk-php"
             },
-            "time": "2025-05-26T13:08:26+00:00"
+            "time": "2025-12-29T13:27:37+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -366,16 +366,16 @@
         },
         {
             "name": "google/cloud-pubsub",
-            "version": "v2.16.0",
+            "version": "v2.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-pubsub.git",
-                "reference": "c20ffde5f7171c07ffcbeaf7712e28378e5a33f1"
+                "reference": "2a2745a94b56cd3e4fc7cd1828671c3f7afdac8b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-pubsub/zipball/c20ffde5f7171c07ffcbeaf7712e28378e5a33f1",
-                "reference": "c20ffde5f7171c07ffcbeaf7712e28378e5a33f1",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-pubsub/zipball/2a2745a94b56cd3e4fc7cd1828671c3f7afdac8b",
+                "reference": "2a2745a94b56cd3e4fc7cd1828671c3f7afdac8b",
                 "shasum": ""
             },
             "require": {
@@ -417,9 +417,9 @@
             ],
             "description": "Cloud PubSub Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-pubsub/tree/v2.16.0"
+                "source": "https://github.com/googleapis/google-cloud-php-pubsub/tree/v2.16.1"
             },
-            "time": "2025-10-20T22:38:13+00:00"
+            "time": "2025-12-13T02:51:17+00:00"
         },
         {
             "name": "google/cloud-secret-manager",
@@ -1156,12 +1156,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "0d529a75d32af31ec6c70b75e13369aa48ae3c3f"
+                "reference": "b321dd6749f0bf7189444158a3ce785cc16d69b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/0d529a75d32af31ec6c70b75e13369aa48ae3c3f",
-                "reference": "0d529a75d32af31ec6c70b75e13369aa48ae3c3f",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/b321dd6749f0bf7189444158a3ce785cc16d69b0",
+                "reference": "b321dd6749f0bf7189444158a3ce785cc16d69b0",
                 "shasum": ""
             },
             "require": {
@@ -1240,7 +1240,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/main"
+                "source": "https://github.com/Seldaek/monolog/tree/3.10.0"
             },
             "funding": [
                 {
@@ -1252,7 +1252,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-10-27T13:40:53+00:00"
+            "time": "2026-01-02T08:56:05+00:00"
         },
         {
             "name": "predis/predis",
@@ -1710,16 +1710,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "cd47a01a1f7c9f54b34b06ec53148a80dc5fe181"
+                "reference": "8429c78ca35a09f27565311b98101e2826affde0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/cd47a01a1f7c9f54b34b06ec53148a80dc5fe181",
-                "reference": "cd47a01a1f7c9f54b34b06ec53148a80dc5fe181",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/8429c78ca35a09f27565311b98101e2826affde0",
+                "reference": "8429c78ca35a09f27565311b98101e2826affde0",
                 "shasum": ""
             },
             "require": {
-                "brick/math": "^0.8.8 || ^0.9 || ^0.10 || ^0.11 || ^0.12 || ^0.13 || ^0.14",
+                "brick/math": "^0.8.16 || ^0.9 || ^0.10 || ^0.11 || ^0.12 || ^0.13 || ^0.14",
                 "php": "^8.0",
                 "ramsey/collection": "^1.2 || ^2.0"
             },
@@ -1779,9 +1779,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ramsey/uuid/issues",
-                "source": "https://github.com/ramsey/uuid/tree/4.x"
+                "source": "https://github.com/ramsey/uuid/tree/4.9.2"
             },
-            "time": "2025-10-06T21:07:16+00:00"
+            "time": "2025-12-14T04:43:48+00:00"
         },
         {
             "name": "rize/uri-template",
@@ -2018,6 +2018,6 @@
         "ext-mongodb": "*",
         "ext-pdo": "*"
     },
-    "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
 }
