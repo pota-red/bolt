@@ -37,11 +37,11 @@ class Cache {
     public function __construct() {
     }
 
-    public function initRedis(string $redis_host) : void {
+    public function initRedis(string $redis_host) {
         $this->redis = new Predis(['scheme' => 'tcp', 'host' => $redis_host, 'port' => 6379]);
     }
 
-    public function initPg(string $pg_instance, string $pg_user, string $pg_pass, string $pg_name) : void {
+    public function initPg(string $pg_instance, string $pg_user, string $pg_pass, string $pg_name) {
         $this->pg = new PDO("pgsql:dbname=$pg_name;host=/cloudsql/$pg_instance", $pg_user, $pg_pass);
     }
 
@@ -57,7 +57,7 @@ class Cache {
         $key = "$table:$col:$value";
         if (!isset($this->data[$key])) {
             if (!$this->redis->exists($key)) {
-                $f = $this->maps[$table] ?? '*';
+                $f = $this->maps[$table] ? implode(',', $this->maps[$table]) : '*';
                 if ($q = $this->pg->query("SELECT $f FROM $table WHERE $col = '$value'")) {
                     if ($r = $q->fetch(PDO::FETCH_OBJ)) {
                         $data = json_encode($r);
