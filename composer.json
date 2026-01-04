@@ -23,7 +23,8 @@
     "google/cloud-secret-manager": "^2.2.1",
     "ext-mongodb": "*",
     "predis/predis": "dev-main",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "google/cloud-logging": "dev-main"
   },
   "autoload": {
     "psr-4": {
