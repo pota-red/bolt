@@ -29,11 +29,34 @@ class Logging extends Module {
         //$this->client = LoggingClient::psrBatchLogger($this->source);
     }
 
-    public function __call(string $loglevel, array $arguments) : void {
-        try {
-            $this->client->$loglevel($this->source . ": " . $arguments[0]);
-        } catch (\Throwable $e) {
-            $this->instance->stderr->error("bolt::logger " . $e->getMessage());
-        }
+    public function emergency(string $text) : void {
+        $this->client->emergency($this->source . ": " . $text);
+    }
+
+    public function alert(string $text) : void {
+        $this->client->alert($this->source . ": " . $text);
+    }
+
+    public function critical(string $text) : void {
+        $this->client->critical($this->source . ": " . $text);
+    }
+
+    public function error(string $text) : void {
+        $this->client->error($this->source . ": " . $text);
+    }
+
+    public function warning(string $text) : void {
+        $this->client->warning($this->source . ": " . $text);
+    }
+    public function notice(string $text) : void {
+        $this->client->notice($this->source . ": " . $text);
+    }
+
+    public function info(string $text) : void {
+        $this->client->info($this->source . ": " . $text);
+    }
+
+    public function debug(string $text) : void {
+        $this->client->debug($this->source . ": " . $text);
     }
 }
