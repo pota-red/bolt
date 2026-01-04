@@ -63,7 +63,15 @@ class Logging extends Module {
     }
 
     private function makeLabel(string|null $name, string|null $value) :  array {
-        return ['stackdriverOptions' => ['labels' => [$name => $value]]];
+        return [
+            "stackdriverOptions" => [
+                "labels" => [
+                    $name => $value,
+                    "run.googleapis.com/trace_id" => "projects/" . $this->instance->config->get("project") . "/traces/" . md5($name.$value),
+                    "appengine.googleapis.com/trace_id" => "projects/" . $this->instance->config->get("project") . "/traces/" . md5($name.$value),
+                ]
+            ]
+        ];
     }
 
     private function makeText(string $value) : string {
