@@ -84,6 +84,7 @@ class Cache {
             'queries' => $this->queries,
             'hydrate_redis' => $this->hydrate_redis,
             'hydrate_db' => $this->hydrate_db,
+            'keys' => count($this->data)
         ];
     }
 
