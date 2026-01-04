@@ -58,19 +58,18 @@ class Cache {
         $key = "$table:$col:$value";
         if (!isset($this->data[$key])) {
             if ($this->redis->exists($key)) {
-                $this->data[$key] = $this->redis->get($key);
+                $this->data[$key] = json_decode($this->redis->get($key));
             } else {
                 $f = $this->maps[$table] ? implode(',', $this->maps[$table]) : '*';
                 if ($q = $this->pg->query("SELECT $f FROM $table WHERE $col = '$value' LIMIT 1")) {
                     if ($r = $q->fetch(PDO::FETCH_OBJ)) {
-                        $data = json_encode($r);
                         $expire = $this->expires[$table] ?? 43200;
-                        $this->redis->set($key, $data, 'EX', $expire);
-                        $this->data[$key] = $data;
+                        $this->redis->set($key, json_encode($r), 'EX', $expire);
+                        $this->data[$key] = $r;
                     }
                 }
             }
         }
-        return isset($this->data[$key]) ? json_decode($this->data[$key]) : null;
+        return $this->data[$key] ?? null;
     }
 }
