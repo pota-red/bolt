@@ -2,8 +2,6 @@
 
 namespace Pota\Bolt;
 
-use Google\Cloud\Logging\LoggingClient;
-
 class Module {
 
     protected Instance $instance;
