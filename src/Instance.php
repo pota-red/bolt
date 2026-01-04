@@ -39,9 +39,6 @@ class Instance {
                 case 'firestore':
                     $this->firestore = new Firestore($this);
                     break;
-                case 'logging':
-                    $this->logging = new Logging($this);
-                    break;
                 case 'cache':
                     $this->cache = new Cache;
                     break;

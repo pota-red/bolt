@@ -3,16 +3,18 @@
 namespace Pota\Bolt;
 
 use Google\Cloud\Logging\LoggingClient;
+use Google\Cloud\Logging\PsrLogger;
 
 class Logging extends Module {
-    private LoggingClient|null $client = null;
+    private PsrLogger|null $client = null;
 
     protected function _initialize() : void {
-        $this->client = new LoggingClient();
+        $lc = new LoggingClient();
+        $this->client = $lc->psrLogger('app');
+
     }
 
-    public function log() : LoggingClient {
+    public function log() : PsrLogger {
         return $this->client;
     }
-
 }
