@@ -30,35 +30,35 @@ class Logging extends Module {
         //$this->client = $lc->psrLogger($this->source, ['batchEnabled' => true]);
     }
 
-    public function emergency(string $text, string $label_name=null, string $label_value=null) : void {
+    public function emergency(string $text, string $label_name=null, mixed $label_value=null) : void {
         $this->client->emergency($this->makeText($text), $this->makeLabel($label_name, $label_value));
     }
 
-    public function alert(string $text, string $label_name=null, string $label_value=null) : void {
+    public function alert(string $text, string $label_name=null, mixed $label_value=null) : void {
         $this->client->alert($this->makeText($text), $this->makeLabel($label_name, $label_value));
     }
 
-    public function critical(string $text, string $label_name=null, string $label_value=null) : void {
+    public function critical(string $text, string $label_name=null, mixed $label_value=null) : void {
         $this->client->critical($this->makeText($text), $this->makeLabel($label_name, $label_value));
     }
 
-    public function error(string $text, string $label_name=null, string $label_value=null) : void {
+    public function error(string $text, string $label_name=null, mixed $label_value=null) : void {
         $this->client->error($this->makeText($text), $this->makeLabel($label_name, $label_value));
     }
 
-    public function warning(string $text, string $label_name=null, string $label_value=null) : void {
+    public function warning(string $text, string $label_name=null, mixed $label_value=null) : void {
         $this->client->warning($this->makeText($text), $this->makeLabel($label_name, $label_value));
     }
 
-    public function notice(string $text, string $label_name=null, string $label_value=null) : void {
+    public function notice(string $text, string $label_name=null, mixed $label_value=null) : void {
         $this->client->notice($this->makeText($text), $this->makeLabel($label_name, $label_value));
     }
 
-    public function info(string $text, string $label_name=null, string $label_value=null) : void {
+    public function info(string $text, string $label_name=null, mixed $label_value=null) : void {
         $this->client->info($this->makeText($text), $this->makeLabel($label_name, $label_value));
     }
 
-    public function debug(string $text, string $label_name=null, string $label_value=null) : void {
+    public function debug(string $text, string $label_name=null, mixed $label_value=null) : void {
         $this->client->debug($this->makeText($text), $this->makeLabel($label_name, $label_value));
     }
 
