@@ -30,39 +30,39 @@ class Logging extends Module {
         //$this->client = $lc->psrLogger($this->source, ['batchEnabled' => true]);
     }
 
-    public function emergency(string $label_name, string $label_value, string $text) : void {
+    public function emergency(string $text, string $label_name=null, string $label_value=null) : void {
         $this->client->emergency($this->makeText($text), $this->makeLabel($label_name, $label_value));
     }
 
-    public function alert(string $label_name, string $label_value, string $text) : void {
+    public function alert(string $text, string $label_name=null, string $label_value=null) : void {
         $this->client->alert($this->makeText($text), $this->makeLabel($label_name, $label_value));
     }
 
-    public function critical(string $label_name, string $label_value, string $text) : void {
+    public function critical(string $text, string $label_name=null, string $label_value=null) : void {
         $this->client->critical($this->makeText($text), $this->makeLabel($label_name, $label_value));
     }
 
-    public function error(string $label_name, string $label_value, string $text) : void {
+    public function error(string $text, string $label_name=null, string $label_value=null) : void {
         $this->client->error($this->makeText($text), $this->makeLabel($label_name, $label_value));
     }
 
-    public function warning(string $label_name, string $label_value, string $text) : void {
+    public function warning(string $text, string $label_name=null, string $label_value=null) : void {
         $this->client->warning($this->makeText($text), $this->makeLabel($label_name, $label_value));
     }
 
-    public function notice(string $label_name, string $label_value, string $text) : void {
+    public function notice(string $text, string $label_name=null, string $label_value=null) : void {
         $this->client->notice($this->makeText($text), $this->makeLabel($label_name, $label_value));
     }
 
-    public function info(string $label_name, string $label_value, string $text) : void {
+    public function info(string $text, string $label_name=null, string $label_value=null) : void {
         $this->client->info($this->makeText($text), $this->makeLabel($label_name, $label_value));
     }
 
-    public function debug(string $label_name, string $label_value, string $text) : void {
+    public function debug(string $text, string $label_name=null, string $label_value=null) : void {
         $this->client->debug($this->makeText($text), $this->makeLabel($label_name, $label_value));
     }
 
-    private function makeLabel(string $name, string $value) :  array {
+    private function makeLabel(string|null $name, string|null $value) :  array {
         return ['stackdriverOptions' => ['labels' => [$name => $value]]];
     }
 
