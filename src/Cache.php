@@ -34,9 +34,9 @@ class Cache {
     private array $expires = [];
     private array $notfound = [];
     private int $queries = 0;
-    private int $local_hits = 0;
-    private int $hydrate_redis = 0;
-    private int $hydrate_db = 0;
+    private int $localcache_hits = 0;
+    private int $redis_hits = 0;
+    private int $db_hits = 0;
     private Predis $redis;
     private PDO $pg;
 
@@ -64,18 +64,18 @@ class Cache {
         $key = "$table:$col:$value";
         if (!isset($this->notfound[$key])) {
             if (isset($this->localcache[$key])) {
-                $this->local_hits++;
+                $this->localcache_hits++;
                 return $this->localcache[$key];
             }
             if ($this->redis->exists($key)) {
-                $this->hydrate_redis++;
+                $this->redis_hits++;
                 $this->localcache[$key] = json_decode($this->redis->get($key));
                 return $this->localcache[$key];
             }
             $f = $this->maps[$table] ? implode(',', $this->maps[$table]) : '*';
             if ($q = $this->pg->query("SELECT $f FROM $table WHERE $col = '$value' LIMIT 1")) {
                 if ($r = $q->fetch(PDO::FETCH_OBJ)) {
-                    $this->hydrate_db++;
+                    $this->db_hits++;
                     $expire = $this->expires[$table] ?? 43200;
                     $this->redis->set($key, json_encode($r), 'EX', $expire);
                     $this->localcache[$key] = $r;
@@ -90,11 +90,11 @@ class Cache {
     public function stats() : array {
         return [
             'queries' => $this->queries,
-            'localcache' => count($this->localcache),
-            'local_hits' => $this->local_hits,
-            'hydrate_redis' => $this->hydrate_redis,
-            'hydrate_db' => $this->hydrate_db,
-            'notfound' => count($this->notfound),
+            'localcache_cnt' => count($this->localcache),
+            'localcache_hits' => $this->localcache_hits,
+            'redis_hits' => $this->redis_hits,
+            'db_hits' => $this->db_hits,
+            'null_db_replies' => count($this->notfound),
         ];
     }
 }
