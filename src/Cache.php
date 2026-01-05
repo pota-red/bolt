@@ -32,6 +32,7 @@ class Cache {
     private array $data = [];
     private array $maps = [];
     private array $expires = [];
+    private array $notfound = [];
     private int $queries = 0;
     private int $hydrate_redis = 0;
     private int $hydrate_db = 0;
@@ -60,10 +61,10 @@ class Cache {
     public function get(string $table, string $col, mixed $value): ?object {
         $this->queries++;
         $key = "$table:$col:$value";
-        if (!isset($this->data[$key])) {
+        if (!isset($this->notfound[$key])) {
             if ($this->redis->exists($key)) {
                 $this->data[$key] = json_decode($this->redis->get($key));
-                $this->hydrate_redis ++;
+                $this->hydrate_redis++;
             } else {
                 $f = $this->maps[$table] ? implode(',', $this->maps[$table]) : '*';
                 if ($q = $this->pg->query("SELECT $f FROM $table WHERE $col = '$value' LIMIT 1")) {
@@ -71,7 +72,9 @@ class Cache {
                         $expire = $this->expires[$table] ?? 43200;
                         $this->redis->set($key, json_encode($r), 'EX', $expire);
                         $this->data[$key] = $r;
-                        $this->hydrate_db ++;
+                        $this->hydrate_db++;
+                    } else {
+                        $this->notfound[$key] = true;
                     }
                 }
             }
@@ -84,8 +87,8 @@ class Cache {
             'queries' => $this->queries,
             'hydrate_redis' => $this->hydrate_redis,
             'hydrate_db' => $this->hydrate_db,
+            'notfound' => count($this->notfound),
             'keys' => count($this->data)
         ];
     }
-
 }
