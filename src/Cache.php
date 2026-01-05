@@ -29,11 +29,12 @@ use Predis\Client as Predis;
 
 class Cache {
 
-    private array $data = [];
+    private array $localcache = [];
     private array $maps = [];
     private array $expires = [];
     private array $notfound = [];
     private int $queries = 0;
+    private int $local_hits = 0;
     private int $hydrate_redis = 0;
     private int $hydrate_db = 0;
     private Predis $redis;
@@ -62,33 +63,38 @@ class Cache {
         $this->queries++;
         $key = "$table:$col:$value";
         if (!isset($this->notfound[$key])) {
+            if (isset($this->localcache[$key])) {
+                $this->local_hits++;
+                return $this->localcache[$key];
+            }
             if ($this->redis->exists($key)) {
-                $this->data[$key] = json_decode($this->redis->get($key));
                 $this->hydrate_redis++;
-            } else {
-                $f = $this->maps[$table] ? implode(',', $this->maps[$table]) : '*';
-                if ($q = $this->pg->query("SELECT $f FROM $table WHERE $col = '$value' LIMIT 1")) {
-                    if ($r = $q->fetch(PDO::FETCH_OBJ)) {
-                        $expire = $this->expires[$table] ?? 43200;
-                        $this->redis->set($key, json_encode($r), 'EX', $expire);
-                        $this->data[$key] = $r;
-                        $this->hydrate_db++;
-                    } else {
-                        $this->notfound[$key] = true;
-                    }
+                $this->localcache[$key] = json_decode($this->redis->get($key));
+                return $this->localcache[$key];
+            }
+            $f = $this->maps[$table] ? implode(',', $this->maps[$table]) : '*';
+            if ($q = $this->pg->query("SELECT $f FROM $table WHERE $col = '$value' LIMIT 1")) {
+                if ($r = $q->fetch(PDO::FETCH_OBJ)) {
+                    $this->hydrate_db++;
+                    $expire = $this->expires[$table] ?? 43200;
+                    $this->redis->set($key, json_encode($r), 'EX', $expire);
+                    $this->localcache[$key] = $r;
+                } else {
+                    $this->notfound[$key] = true;
                 }
             }
         }
-        return $this->data[$key] ?? null;
+        return $this->localcache[$key] ?? null;
     }
 
     public function stats() : array {
         return [
             'queries' => $this->queries,
+            'localcache' => count($this->localcache),
+            'local_hits' => $this->local_hits,
             'hydrate_redis' => $this->hydrate_redis,
             'hydrate_db' => $this->hydrate_db,
             'notfound' => count($this->notfound),
-            'keys' => count($this->data)
         ];
     }
 }
