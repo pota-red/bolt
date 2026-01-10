@@ -24,8 +24,8 @@
     "google/cloud-pubsub": "^2.16",
     "google/cloud-secret-manager": "^2.2.1",
     "predis/predis": "dev-main",
-    "ext-pdo": "*",
-    "google/cloud-logging": "dev-main"
+    "google/cloud-logging": "dev-main",
+    "ext-pdo": "*"
   },
   "autoload": {
     "psr-4": {
@@ -35,5 +35,9 @@
   "minimum-stability": "dev",
   "provide": {
     "ext-grpc": "@dev"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.27",
+    "phpstan/phpstan": "2.1.x-dev"
   }
 }
