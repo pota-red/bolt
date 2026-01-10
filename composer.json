@@ -15,16 +15,16 @@
   ],
   "require": {
     "php" : "^8.3",
-    "google/cloud-functions-framework": "^1.4",
-    "guzzlehttp/psr7": "^2.8",
-    "psr/http-message": "dev-master",
-    "grpc/grpc": "^1.74",
     "google/protobuf": "^4.33",
+    "google/cloud-functions-framework": "^1.4",
     "google/cloud-storage": "^1.48",
     "google/cloud-pubsub": "^2.16",
     "google/cloud-secret-manager": "^2.2.1",
     "predis/predis": "dev-main",
     "google/cloud-logging": "dev-main",
+    "guzzlehttp/psr7": "^2.8",
+    "psr/http-message": "dev-master",
+    "grpc/grpc": "^1.74",
     "ext-pdo": "*"
   },
   "autoload": {
