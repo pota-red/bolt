@@ -21,7 +21,6 @@
     "google/cloud-storage": "^1.48",
     "google/cloud-pubsub": "^2.16",
     "google/cloud-secret-manager": "^2.2.1",
-    "ext-mongodb": "*",
     "predis/predis": "dev-main",
     "ext-pdo": "*",
     "google/cloud-logging": "dev-main"
@@ -33,7 +32,6 @@
   },
   "minimum-stability": "dev",
   "provide": {
-    "ext-grpc": "@dev",
-    "ext-mongodb": "@dev"
+    "ext-grpc": "@dev"
   }
 }
