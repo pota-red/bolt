@@ -25,6 +25,8 @@
     "guzzlehttp/psr7": "^2.8",
     "psr/http-message": "dev-master",
     "grpc/grpc": "^1.74",
+    "laravel/pint": "^1.27",
+    "phpstan/phpstan": "2.1.x-dev",
     "ext-pdo": "*"
   },
   "autoload": {
@@ -35,9 +37,5 @@
   "minimum-stability": "dev",
   "provide": {
     "ext-grpc": "@dev"
-  },
-  "require-dev": {
-    "laravel/pint": "^1.27",
-    "phpstan/phpstan": "2.1.x-dev"
   }
 }
