@@ -97,7 +97,7 @@ class Cache {
             }
             if ($this->redis->exists($key)) {
                 $this->redis_hits++;
-                $this->localcache[$key] = json_decode($this->redis->get($key));
+                $this->localcache[$key] = json_decode($this->redis->get($key), true);
                 return $this->localcache[$key];
             }
             $sql = "
@@ -109,7 +109,7 @@ class Cache {
                     AND (end_at >= '$date' OR end_at IS NULL)               
             ";
             if ($q = $this->pg->query($sql)) {
-                if ($r = $q->fetchAll(PDO::FETCH_OBJ)) {
+                if ($r = $q->fetchAll(PDO::FETCH_ASSOC)) {
                     $this->db_hits++;
                     $expire = 3600;
                     $this->redis->set($key, json_encode($r), 'EX', $expire);
