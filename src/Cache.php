@@ -87,6 +87,42 @@ class Cache {
         return $this->localcache[$key] ?? null;
     }
 
+    public function getCallsignIds(mixed $value, string $date): ?object {
+        $this->queries++;
+        $key = "callsign_ids:$value";
+        if (!isset($this->notfound[$key])) {
+            if (isset($this->localcache[$key])) {
+                $this->localcache_hits++;
+                return $this->localcache[$key];
+            }
+            if ($this->redis->exists($key)) {
+                $this->redis_hits++;
+                $this->localcache[$key] = json_decode($this->redis->get($key));
+                return $this->localcache[$key];
+            }
+            $sql = "
+                SELECT id, account_id 
+                FROM callsigns 
+                WHERE 
+                    label='$value' 
+                    AND (start_at <= '$date' OR start_at IS NULL) 
+                    AND (end_at >= '$date' OR end_at IS NULL)               
+            ";
+            if ($q = $this->pg->query($sql)) {
+                if ($r = $q->fetchAll(PDO::FETCH_OBJ)) {
+                    $this->db_hits++;
+                    $expire = $this->expires['callsigns'] ?? 43200;
+                    $this->redis->set($key, json_encode($r), 'EX', $expire);
+                    $this->localcache[$key] = $r;
+                } else {
+                    $this->notfound[$key] = true;
+                }
+            }
+        }
+        return $this->localcache[$key] ?? null;
+    }
+
+
     public function stats() : array {
         return [
             'queries' => $this->queries,
