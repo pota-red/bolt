@@ -87,7 +87,7 @@ class Cache {
         return $this->localcache[$key] ?? null;
     }
 
-    public function getCallsignIds(mixed $value, string $date): ?object {
+    public function getCallsignIds(mixed $value, string $date): ?array {
         $this->queries++;
         $key = "callsign_ids:$value";
         if (!isset($this->notfound[$key])) {
