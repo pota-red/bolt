@@ -111,7 +111,7 @@ class Cache {
             if ($q = $this->pg->query($sql)) {
                 if ($r = $q->fetchAll(PDO::FETCH_OBJ)) {
                     $this->db_hits++;
-                    $expire = $this->expires['callsigns'] ?? 43200;
+                    $expire = 3600;
                     $this->redis->set($key, json_encode($r), 'EX', $expire);
                     $this->localcache[$key] = $r;
                 } else {
