@@ -105,6 +105,7 @@ class Cache {
                 FROM callsigns 
                 WHERE 
                     label='$value' 
+                    AND is_active=true 
                     AND (start_at <= '$date' OR start_at IS NULL) 
                     AND (end_at >= '$date' OR end_at IS NULL)               
             ";
